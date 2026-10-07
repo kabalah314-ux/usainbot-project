@@ -1,0 +1,9 @@
+.vercel
+.env*
+!.env.example
+node_modules/
+dist/
+*.log
+__pycache__/
+*.py[cod]
+.broadcast_state.json

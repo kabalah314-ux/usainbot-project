@@ -1,0 +1,15 @@
+# Free Telegram assistant configuration
+# Copy these names into your local environment. Never publish the real bot token.
+
+TELEGRAM_BOT_TOKEN=PASTE_THE_TOKEN_FROM_BOTFATHER_HERE
+PRELAUNCH=true
+BOT_WEB_URL=https://usain-bot.vercel.app
+BOT_X_URL=
+BOT_CHART_URL=
+BOT_TELEGRAM_URL=https://t.me/Usainhbot
+BOT_TELEGRAM_GROUP_URL=
+BOT_CREATOR_X_URL=
+TELEGRAM_BROADCAST_CHAT_ID=
+PRELAUNCH_BROADCASTS=true
+PRELAUNCH_BROADCAST_INTERVAL_MINUTES=480
+PRELAUNCH_BROADCAST_SEND_ON_START=false

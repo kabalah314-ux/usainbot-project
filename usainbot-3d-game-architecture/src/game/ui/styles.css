@@ -1,0 +1,849 @@
+/* ============================================================
+   USAINBOT — UI de desarrollo (estética arcade/PS2)
+   Solo se usa en fase de sandbox; la UI definitiva vendrá después.
+   ============================================================ */
+
+:root {
+  --ub-panel: rgba(13, 17, 23, 0.86);
+  --ub-line: #2c3947;
+  --ub-yellow: #ffcf3f;
+  --ub-green: #4cd97b;
+  --ub-cyan: #6fe7ff;
+  --ub-red: #ff5d5d;
+  --ub-text: #e8eef4;
+  --ub-dim: #8b9aa8;
+  --ub-font: "Press Start 2P", "Courier New", monospace;
+  --ub-mono: ui-monospace, "Cascadia Mono", "Courier New", monospace;
+}
+
+canvas {
+  display: block;
+}
+
+/* ---------------- HUD ---------------- */
+
+.ub-hud {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 10;
+  font-family: var(--ub-mono);
+  color: var(--ub-text);
+}
+
+.ub-hud__brand {
+  position: absolute;
+  top: 14px;
+  left: 16px;
+}
+
+.ub-hud__brand h1 {
+  margin: 0;
+  font-family: var(--ub-font);
+  font-size: 20px;
+  letter-spacing: 2px;
+  color: var(--ub-yellow);
+  text-shadow:
+    3px 3px 0 #123c2e,
+    6px 6px 0 rgba(0, 0, 0, 0.35);
+}
+
+.ub-hud__build {
+  margin-top: 7px;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--ub-cyan);
+}
+
+/* Tarjeta de estado del jugador */
+.ub-hud__player {
+  position: absolute;
+  left: 228px;
+  bottom: 16px;
+  min-width: 220px;
+  padding: 10px 12px;
+  background: var(--ub-panel);
+  border: 2px solid var(--ub-line);
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.4);
+  font-size: 12px;
+}
+
+.ub-hud__row {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  line-height: 1.7;
+}
+
+.ub-hud__lbl {
+  color: var(--ub-dim);
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+
+.ub-hud__energy {
+  margin-top: 8px;
+}
+
+.ub-hud__bar {
+  margin-top: 4px;
+  height: 8px;
+  background: #0a0e12;
+  border: 1px solid var(--ub-line);
+}
+
+.ub-hud__bar-fill {
+  height: 100%;
+  width: 100%;
+  background: var(--ub-green);
+  transition: width 0.15s steps(4);
+}
+
+.ub-hud__sprint {
+  position: absolute;
+  top: -10px;
+  right: 10px;
+  padding: 3px 7px;
+  font-size: 9px;
+  letter-spacing: 1px;
+  color: #101418;
+  background: var(--ub-yellow);
+  border: 2px solid #101418;
+}
+
+/* Barra de misión */
+.ub-hud__mission {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background: var(--ub-panel);
+  border: 2px solid var(--ub-line);
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.4);
+  font-size: 11px;
+  letter-spacing: 1px;
+}
+
+.ub-hud__mission-badge {
+  padding: 2px 6px;
+  font-size: 9px;
+  letter-spacing: 1px;
+  color: #101418;
+  background: var(--ub-cyan);
+}
+
+.ub-badge--available { background: var(--ub-yellow); }
+.ub-badge--active { background: var(--ub-cyan); }
+.ub-badge--locked { background: #5b6672; color: #101418; }
+.ub-badge--completed { background: var(--ub-green); }
+.ub-badge--failed { background: var(--ub-red); color: #101418; }
+
+/* Mensajes de debug */
+.ub-hud__feed {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  max-width: 340px;
+}
+
+.ub-msg {
+  padding: 4px 8px;
+  font-size: 11px;
+  background: var(--ub-panel);
+  border: 1px solid var(--ub-line);
+  border-left: 3px solid var(--ub-cyan);
+  animation: ub-msg-in 0.15s steps(2);
+}
+
+.ub-msg--success { border-left-color: var(--ub-green); }
+.ub-msg--warn { border-left-color: var(--ub-yellow); }
+.ub-msg--error { border-left-color: var(--ub-red); }
+
+@keyframes ub-msg-in {
+  from { opacity: 0; transform: translateX(8px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* Barra de controles estilo PS2 */
+.ub-hud__controls {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 14px;
+  padding: 6px 12px;
+  background: rgba(13, 17, 23, 0.7);
+  border: 2px solid var(--ub-line);
+  font-size: 10px;
+  white-space: nowrap;
+}
+
+.ub-hud--pad .ub-ctrl__key {
+  display: none;
+}
+
+/* ---------------- Glifos de mando ---------------- */
+
+.ub-ctrl {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--ub-text);
+}
+
+.ub-ctrl__key {
+  font-style: normal;
+  font-size: 9px;
+  padding: 1px 4px;
+  color: var(--ub-dim);
+  border: 1px solid var(--ub-line);
+  background: #0a0e12;
+}
+
+.ub-g {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 4px;
+  border-radius: 999px;
+  background: #1b2129;
+  border: 2px solid #3a4552;
+  font-family: var(--ub-mono);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.45);
+}
+
+.ub-g + .ub-g { margin-left: 2px; }
+.ub-g--cross { color: #7fa8ff; }
+.ub-g--circle { color: #ff6b6b; }
+.ub-g--square { color: #ff8ad8; }
+.ub-g--triangle { color: #4fe3a5; }
+
+.ub-g--l1,
+.ub-g--r1,
+.ub-g--start,
+.ub-g--select,
+.ub-g--lstick,
+.ub-g--rstick {
+  border-radius: 5px;
+  font-size: 9px;
+  letter-spacing: 1px;
+  color: #d5dde5;
+}
+
+.ub-g--lstick,
+.ub-g--rstick {
+  border-radius: 999px;
+  background: radial-gradient(circle at 50% 40%, #3a4552, #151a20);
+}
+
+@keyframes ub-blink {
+  50% { opacity: 0.35; }
+}
+
+/* ---------------- Panel de debug (F2) ---------------- */
+
+.ub-debug {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  z-index: 30;
+  min-width: 250px;
+  padding: 8px 10px;
+  background: var(--ub-panel);
+  border: 2px solid var(--ub-line);
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.4);
+  font-family: var(--ub-mono);
+  pointer-events: none;
+}
+
+.ub-debug__head {
+  font-family: var(--ub-font);
+  font-size: 9px;
+  letter-spacing: 1px;
+  color: var(--ub-cyan);
+}
+
+.ub-debug__stats {
+  margin: 8px 0 0;
+  color: #b9c7d4;
+  font-size: 11px;
+  line-height: 1.55;
+  white-space: pre;
+}
+
+/* ---------------- Menús (inicio / pausa) ---------------- */
+
+.ub-menu {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(8, 12, 18, 0.82);
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.ub-menu__panel {
+  max-width: 580px;
+  padding: 36px 44px;
+  text-align: center;
+  background: #10161d;
+  border: 3px solid var(--ub-yellow);
+  box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.5);
+}
+
+.ub-menu__title {
+  margin: 0 0 18px;
+  font-family: var(--ub-font);
+  font-size: 26px;
+  letter-spacing: 3px;
+  color: var(--ub-yellow);
+  text-shadow:
+    3px 3px 0 #123c2e,
+    6px 6px 0 rgba(0, 0, 0, 0.4);
+}
+
+.ub-menu__title--start {
+  font-size: 34px;
+}
+
+.ub-menu__tagline {
+  margin: 0 0 22px;
+  font-family: var(--ub-mono);
+  font-size: 13px;
+  font-style: italic;
+  color: var(--ub-cyan);
+}
+
+.ub-menu__controls {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 9px 22px;
+  margin: 0 auto;
+  text-align: left;
+  font-family: var(--ub-mono);
+  font-size: 12px;
+}
+
+.ub-menu__controls .ub-ctrl__label {
+  color: var(--ub-text);
+}
+
+.ub-menu__cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 26px;
+  font-family: var(--ub-font);
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--ub-yellow);
+  animation: ub-blink 1s steps(2) infinite;
+}
+
+.ub-menu__cta .ub-g {
+  font-family: var(--ub-mono);
+}
+
+/* ---------------- Bocadillo holográfico (ilustración) ---------------- */
+
+.ub-bubble {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 12;
+  pointer-events: none;
+  max-width: 220px;
+  filter: drop-shadow(0 0 6px rgba(95, 247, 214, 0.75)) drop-shadow(0 0 14px rgba(95, 247, 214, 0.35));
+  will-change: transform;
+}
+
+.ub-bubble__frame {
+  padding: 3px;
+  background: #5ff7d6;
+  clip-path: polygon(14px 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%, 0 14px);
+}
+
+.ub-bubble__text {
+  display: block;
+  padding: 10px 16px;
+  background: linear-gradient(180deg, #16514d, #0d3533);
+  clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px);
+  color: #e9fffb;
+  font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: center;
+  text-shadow: 0 0 6px rgba(95, 247, 214, 0.6);
+}
+
+/* Cola del bocadillo apuntando al personaje */
+.ub-bubble::after {
+  content: "";
+  position: absolute;
+  left: 18px;
+  bottom: -15px;
+  width: 22px;
+  height: 18px;
+  background: #5ff7d6;
+  clip-path: polygon(0 0, 100% 0, 0 100%);
+}
+
+.ub-bubble--pop .ub-bubble__text {
+  animation: ub-bubble-pop 0.22s steps(3);
+}
+
+@keyframes ub-bubble-pop {
+  from { opacity: 0; letter-spacing: 4px; }
+  to { opacity: 1; letter-spacing: 0; }
+}
+
+/* ================= Fase 3: barrio, navegación y GasOil ================= */
+
+.ub-hud__mission-top { display: flex; align-items: center; gap: 10px; }
+.ub-hud__objective {
+  font-size: 12px;
+  color: #ffe9a8;
+  letter-spacing: 0.5px;
+}
+
+.ub-hud__wallet {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 10px;
+  background: var(--ub-panel);
+  border: 2px solid var(--ub-line);
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.4);
+}
+.ub-hud__money {
+  font-family: var(--ub-font);
+  font-size: 13px;
+  color: #6dff9c;
+  text-shadow: 2px 2px 0 #0b2a15;
+}
+.ub-hud__item { position: relative; display: inline-flex; align-items: center; }
+.ub-hud__item img { width: 22px; height: 33px; image-rendering: auto; }
+.ub-hud__item b { margin-left: 4px; font-family: var(--ub-font); font-size: 10px; color: #ff9a4a; }
+.ub-hud__item--empty { opacity: 0.35; }
+.ub-debug { top: 64px; }
+
+.ub-hud__bar-fill--boost {
+  background: linear-gradient(90deg, #ff7a1a, #ffd23f);
+  box-shadow: 0 0 8px rgba(255, 150, 40, 0.8);
+}
+
+.ub-hud__prompt {
+  position: absolute;
+  left: 50%;
+  bottom: 64px;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  background: rgba(13, 17, 23, 0.9);
+  border: 2px solid var(--ub-yellow);
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+  animation: ub-msg-in 0.15s steps(2);
+}
+.ub-hud--pad .ub-hud__prompt .ub-ctrl__key { display: none; }
+
+.ub-hud__toast {
+  position: absolute;
+  top: 128px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 8px 16px;
+  background: rgba(13, 17, 23, 0.9);
+  border-left: 4px solid var(--ub-cyan);
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+  animation: ub-msg-in 0.15s steps(2);
+}
+.ub-hud__toast--success { border-left-color: var(--ub-green); }
+.ub-hud__toast--warn { border-left-color: #ff9a4a; }
+
+.ub-hud__zone {
+  position: absolute;
+  right: 26px;
+  bottom: 120px;
+  font-family: var(--ub-font);
+  font-size: 18px;
+  color: #fff;
+  letter-spacing: 2px;
+  text-shadow: 3px 3px 0 #10243b, -1px -1px 0 #10243b;
+}
+.ub-hud__zone--in { animation: ub-zone-in 0.4s ease-out; }
+@keyframes ub-zone-in {
+  from { opacity: 0; transform: translateX(30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.ub-hud__banner {
+  position: absolute;
+  top: 34%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 18px 40px;
+  background: linear-gradient(90deg, transparent, rgba(10, 14, 20, 0.88) 15%, rgba(10, 14, 20, 0.88) 85%, transparent);
+}
+.ub-hud__banner strong {
+  font-family: var(--ub-font);
+  font-size: 30px;
+  color: var(--ub-yellow);
+  letter-spacing: 3px;
+  text-shadow: 4px 4px 0 #123c2e;
+}
+.ub-hud__banner span { font-size: 15px; font-weight: 700; color: #6dff9c; letter-spacing: 1px; }
+.ub-hud__banner--in { animation: ub-banner-in 0.35s cubic-bezier(0.2, 1.6, 0.4, 1); }
+@keyframes ub-banner-in {
+  from { opacity: 0; transform: translateX(-50%) scale(1.6); }
+  to { opacity: 1; transform: translateX(-50%) scale(1); }
+}
+
+/* Minimapa */
+.ub-minimap {
+  position: absolute;
+  left: 16px;
+  bottom: 16px;
+  z-index: 11;
+  width: 196px;
+  pointer-events: none;
+}
+.ub-minimap canvas {
+  display: block;
+  border-radius: 50%;
+  border: 4px solid #1b1f26;
+  box-shadow: 0 0 0 2px var(--ub-yellow), 4px 6px 0 rgba(0, 0, 0, 0.45);
+  background: #6f8f5a;
+}
+.ub-minimap__zone {
+  margin-top: 6px;
+  text-align: center;
+  font-family: var(--ub-font);
+  font-size: 8px;
+  letter-spacing: 1px;
+  color: #fff;
+  text-shadow: 2px 2px 0 #000;
+}
+
+/* Waypoint: brújula + marcador en pantalla */
+.ub-waypoint {
+  position: absolute;
+  top: 84px;
+  left: 50%;
+  z-index: 11;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 12px;
+  background: rgba(13, 17, 23, 0.88);
+  border: 2px solid var(--wp-color, #ffe14d);
+  font-family: var(--ub-mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  pointer-events: none;
+  white-space: nowrap;
+}
+.ub-waypoint__arrow { display: inline-block; color: var(--wp-color, #ffe14d); font-size: 14px; }
+.ub-waypoint__icon { color: var(--wp-color, #ffe14d); font-weight: 900; }
+.ub-waypoint__dist { color: var(--wp-color, #ffe14d); font-family: var(--ub-font); font-size: 10px; }
+
+.ub-marker {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  margin: -16px 0 0 -16px;
+  pointer-events: none;
+  will-change: transform;
+}
+.ub-marker__icon {
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #15191f;
+  border: 3px solid var(--wp-color, #ffe14d);
+  transform: rotate(45deg);
+  color: var(--wp-color, #ffe14d);
+  font-weight: 900;
+  font-size: 13px;
+  box-shadow: 0 0 10px var(--wp-color, #ffe14d);
+  animation: ub-bob 1s ease-in-out infinite;
+}
+.ub-marker__dist {
+  font-family: var(--ub-font);
+  font-size: 9px;
+  color: #fff;
+  text-shadow: 2px 2px 0 #000;
+}
+.ub-marker--edge .ub-marker__icon { opacity: 0.8; }
+@keyframes ub-bob {
+  50% { translate: 0 -4px; }
+}
+
+/* Mapa completo */
+.ub-worldmap {
+  position: absolute;
+  inset: 0;
+  z-index: 25;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(8, 12, 18, 0.86);
+}
+.ub-worldmap__panel {
+  display: flex;
+  gap: 18px;
+  padding: 16px;
+  background: #10161d;
+  border: 3px solid var(--ub-yellow);
+  box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.5);
+}
+.ub-worldmap canvas { display: block; border: 2px solid #2c3947; }
+.ub-worldmap aside { width: 220px; font-family: var(--ub-mono); font-size: 12px; color: var(--ub-text); }
+.ub-worldmap h2 { margin: 0 0 12px; font-family: var(--ub-font); font-size: 12px; color: var(--ub-yellow); }
+.ub-worldmap__info { margin-bottom: 14px; line-height: 1.6; color: #ffe9a8; }
+.ub-worldmap ul { list-style: none; margin: 0 0 16px; padding: 0; line-height: 1.9; }
+.ub-worldmap li span { display: inline-block; width: 22px; font-weight: 900; text-align: center; }
+.ub-worldmap p { display: flex; align-items: center; gap: 4px; color: var(--ub-dim); }
+
+/* Diálogo */
+.ub-dialogue {
+  position: absolute;
+  left: 50%;
+  bottom: 70px;
+  z-index: 15;
+  transform: translateX(-50%);
+  width: min(720px, 86vw);
+  padding: 18px 22px 14px;
+  background: linear-gradient(180deg, rgba(16, 36, 59, 0.96), rgba(10, 20, 34, 0.96));
+  border: 3px solid var(--ub-cyan);
+  box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.5);
+  font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+  color: #fff;
+}
+.ub-dialogue__name {
+  position: absolute;
+  top: -15px;
+  left: 16px;
+  padding: 4px 10px;
+  background: var(--ub-yellow);
+  color: #10161d;
+  font-family: var(--ub-font);
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+.ub-dialogue__text { min-height: 44px; font-size: 17px; line-height: 1.45; }
+.ub-dialogue__hint {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 4px;
+  margin-top: 8px;
+  font-size: 10px;
+  color: var(--ub-dim);
+  animation: ub-blink 1s steps(2) infinite;
+}
+
+
+/* ================= Fase 4: PC, turbo, GasOil y carreras ================= */
+
+.ub-key {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  margin-right: 3px;
+  background: linear-gradient(180deg, #f4f6f8, #c9d0d6);
+  color: #15191f;
+  border: 1px solid #0b0e11;
+  border-radius: 4px;
+  box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.25), 0 2px 0 #0b0e11;
+  font-family: var(--ub-mono);
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  line-height: 1;
+}
+.ub-key--wide { padding: 0 8px; }
+.ub-ctrl__label { margin-left: 4px; }
+
+/* Ayuda de controles: discreta, se oculta sola */
+.ub-hud__help {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+  padding: 10px 12px;
+  background: rgba(13, 17, 23, 0.62);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: #dfe7ee;
+  transition: opacity 0.6s, transform 0.6s;
+}
+.ub-hud__help em { margin-top: 4px; font-style: normal; color: var(--ub-dim); font-size: 9px; }
+.ub-hud__help--hidden { opacity: 0; transform: translateX(20px); }
+.ub-hud__feed { bottom: 190px; }
+
+/* Barra de TURBO (junto al minimapa) */
+.ub-hud__turbo {
+  position: absolute;
+  left: 228px;
+  bottom: 22px;
+  width: 290px;
+  padding: 8px 10px 10px;
+  background: var(--ub-panel);
+  border: 2px solid var(--ub-line);
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.4);
+}
+.ub-hud__turbo-head { display: flex; align-items: baseline; gap: 8px; margin-bottom: 6px; }
+.ub-hud__turbo-label {
+  font-family: var(--ub-font);
+  font-size: 12px;
+  color: #ff9a3a;
+  text-shadow: 2px 2px 0 #3a1a04;
+  letter-spacing: 2px;
+}
+.ub-hud__turbo-tag { font-family: var(--ub-font); font-size: 8px; color: #ffd23f; }
+.ub-hud__speed { margin-left: auto; font-family: var(--ub-font); font-size: 9px; color: #e8eef4; }
+.ub-hud__turbo-bar {
+  display: grid;
+  grid-template-columns: repeat(20, 1fr);
+  gap: 2px;
+  height: 14px;
+  padding: 2px;
+  background: #07090c;
+  border: 1px solid #2c3947;
+  transform: skewX(-14deg);
+}
+.ub-hud__turbo-bar i { display: block; background: #1d242d; }
+.ub-hud__turbo-bar i.on { background: linear-gradient(180deg, #ffd23f, #ff7a1a); }
+.ub-hud__turbo--active .ub-hud__turbo-bar i.on {
+  background: linear-gradient(180deg, #fff3a8, #ffb13a);
+  box-shadow: 0 0 6px rgba(255, 170, 40, 0.9);
+}
+.ub-hud__turbo--active { border-color: #ff9a3a; animation: ub-turbo-shake 0.12s linear infinite; }
+.ub-hud__turbo--flash { border-color: #5ff7d6; box-shadow: 0 0 16px rgba(95, 247, 214, 0.8), 4px 4px 0 rgba(0, 0, 0, 0.4); }
+.ub-hud__turbo--flash .ub-hud__turbo-bar i.on { background: linear-gradient(180deg, #d9fff6, #5ff7d6); }
+.ub-hud__turbo--deny { border-color: #ff4d4d; animation: ub-deny 0.3s steps(2) 3; }
+.ub-hud__turbo--deny .ub-hud__turbo-tag { color: #ff4d4d; }
+@keyframes ub-turbo-shake { 50% { translate: 1px -1px; } }
+@keyframes ub-deny { 50% { translate: 5px 0; } }
+
+/* GASOIL ×N */
+.ub-hud__item-name { margin-left: 4px; font-family: var(--ub-font); font-size: 8px; color: #ffb36b; }
+
+/* Panel de carrera */
+.ub-hud__race {
+  position: absolute;
+  top: 64px;
+  right: 16px;
+  min-width: 210px;
+  padding: 8px 12px;
+  background: rgba(13, 17, 23, 0.9);
+  border: 2px solid #ff4d6d;
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.4);
+}
+.ub-hud__race-name { margin-bottom: 6px; font-family: var(--ub-font); font-size: 8px; color: #ff4d6d; letter-spacing: 1px; }
+.ub-hud__race-row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.ub-hud__race-row span { font-size: 10px; color: var(--ub-dim); letter-spacing: 1px; }
+.ub-hud__race-row b { font-family: var(--ub-font); font-size: 13px; color: #fff; }
+.ub-hud__race-row--target b { font-size: 10px; color: #ffd23f; }
+.ub-hud__race--late .ub-race-time { color: #ff4d4d; animation: ub-blink 0.5s steps(2) infinite; }
+.ub-debug { top: 250px; }
+
+/* Cuenta atrás 3-2-1-GO! */
+.ub-hud__countdown {
+  position: absolute;
+  top: 38%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--ub-font);
+  font-size: 96px;
+  color: #ffd23f;
+  text-shadow: 6px 6px 0 #7a2a00, -2px -2px 0 #7a2a00;
+}
+.ub-hud__countdown--pop { animation: ub-count 0.5s cubic-bezier(0.2, 1.8, 0.4, 1); }
+@keyframes ub-count {
+  from { opacity: 0; scale: 2.2; }
+  to { opacity: 1; scale: 1; }
+}
+
+/* Inventario en pausa */
+.ub-menu__inventory {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  margin: 0 0 18px;
+  padding: 8px;
+  border: 1px solid #2c3947;
+  font-family: var(--ub-mono);
+  font-size: 12px;
+  color: #ffb36b;
+}
+.ub-menu__inventory b { color: var(--ub-yellow); }
+
+
+/* ================= Fase 5: vehículos ================= */
+.ub-hud__vehicle {
+  position: absolute;
+  left: 228px;
+  bottom: 96px;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 8px 14px;
+  background: var(--ub-panel);
+  border: 2px solid #f2c21c;
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.4);
+}
+.ub-hud__vehicle-name { font-family: var(--ub-font); font-size: 9px; color: #f2c21c; letter-spacing: 1px; }
+.ub-hud__vehicle-speed { font-family: var(--ub-font); font-size: 26px; color: #fff; text-shadow: 3px 3px 0 #3a2a04; min-width: 64px; text-align: right; }
+.ub-hud__vehicle small { font-family: var(--ub-font); font-size: 8px; color: var(--ub-dim); }
+.ub-hud__vehicle-gear { font-family: var(--ub-font); font-size: 14px; color: #6dff9c; margin-left: 6px; }
+.ub-hud__turbo--off { opacity: 0.45; filter: grayscale(0.7); }
