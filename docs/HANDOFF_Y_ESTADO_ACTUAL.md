@@ -50,4 +50,4 @@ El proyecto está en un punto óptimo: la landing page está 100% funcional, des
 ## 3. Contactos y Credenciales del Entorno
 - **Cuenta Vercel vinculada:** `kabalah314-ux`
 - **Proyecto Vercel:** `usain-bot`
-- **Repositorio local:** `c:\Users\oscar\Documents\memes\Usain bot project`
+- **Repositorio local:** `c:\Users\oscar\Documents\OOOX\01-Crypto\usain-bot\codigo`

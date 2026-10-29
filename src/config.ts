@@ -2,7 +2,7 @@ export const config = {
   name: "Usain Bot",
   ticker: "BOLT",
   slogan: "USAIN BOT ARE MORE FASTER THAN YOU F..K HUMANS, THE WORLD IS FOR THE ROBOTS",
-  sub: "The fastest cyborg bot on Solana. No extra buy or sell tax: only the 1% network fee. Liquidity locked forever. The robot era has begun.",
+  sub: "The fastest cyborg bot on Solana. No extra buy or sell tax: only the 1% Jupiter trading fee. LP locked forever after graduation. The robot era has begun.",
 
   prelaunch: {
     active: true,
@@ -81,32 +81,33 @@ export const config = {
   marquee: [
     "WINNERS ARE ALWAYS FIRST",
     "0 / 0 TAX",
-    "ONLY 1% NETWORK FEE",
-    "LIQUIDITY LOCKED FOREVER",
-    "NO ADMIN KEYS",
-    "100% COMMUNITY FAIR LAUNCH",
+    "ONLY 1% JUPITER TRADING FEE",
+    "LP LOCKED FOREVER",
+    "NO MINT · NO FREEZE",
+    "FAIR LAUNCH ON JUPITER",
     "SOLANA · MAINNET-BETA",
   ],
 
   tokenomics: {
     cards: [
       { label: "Total Supply", value: "1,000,000,000" },
-      { label: "Tax", value: "0/0", hint: "No extra buy/sell fees: only the 1% network commission applies." },
+      { label: "Tax", value: "0/0", hint: "No extra tax. Jupiter charges 1% per trade; half goes to the creator." },
       {
         label: "Liquidity",
         value: "Locked forever",
-        hint: "Locked at launch, no team slice",
+        hint: "LP locked forever on Meteora after graduation",
         linkKey: "curve" as const,
       },
       {
-        label: "Admin keys",
-        value: "None",
-        hint: "Renounced contract: 0 owner, 0 mint, 0 tax functions",
+        label: "Authorities",
+        value: "Revoked",
+        hint: "No mint and no freeze authority. Check it on Solscan.",
         linkKey: "ca" as const,
       },
     ],
     distribution: [
-      { label: "100% Public Bonding Curve & Liquidity", pct: 100, color: "#009b3a" },
+      { label: "Public bonding curve", pct: 79, color: "#009b3a" },
+      { label: "Liquidity pool at graduation (LP locked)", pct: 21, color: "#fed100" },
     ],
   },
 
@@ -121,7 +122,7 @@ export const config = {
     },
     {
       title: "Swap for $BOLT",
-      body: "Swap SOL for $BOLT on the official DEX linked on this site. Only the 1% network fee applies: no extra buy or sell tax.",
+      body: "Swap SOL for $BOLT on Jupiter using the official link on this site. Only the 1% Jupiter trading fee applies: no extra buy or sell tax.",
     },
   ],
 
@@ -129,17 +130,17 @@ export const config = {
     {
       tag: "Lane 1",
       title: "False start protection",
-      body: "No presale, no team tokens, no secret allocations. The curve opens for everyone at the exact same block.",
+      body: "No presale, no team tokens, no secret allocations. The curve opens for everyone at the same time, with anti-sniper protection in the first seconds.",
     },
     {
       tag: "Lane 2",
       title: "Sonic velocity on Solana",
-      body: "Near-instant transactions and tiny fees: only the 1% network commission, no extra buy or sell tax.",
+      body: "Near-instant transactions and tiny network fees. Only the 1% Jupiter trading fee, no extra buy or sell tax.",
     },
     {
       tag: "Lane 3",
       title: "Liquidity locked forever",
-      body: "Upon completing the curve, liquidity migrates to the DEX and is burned/locked for eternity.",
+      body: "When the curve completes, liquidity migrates to a Meteora pool and the LP is locked forever.",
     },
     {
       tag: "Lane 4",
@@ -155,7 +156,7 @@ export const config = {
     },
     {
       q: "Is there any buy or sell tax?",
-      a: "No extra tax on buys or sells (0/0). The only cost is the 1% network commission: no extra platform, contract or hidden fees.",
+      a: "No extra tax on buys or sells (0/0). The only cost is the 1% Jupiter trading fee on each trade (half goes to the creator, half to the platform). No hidden fees.",
     },
     {
       q: "What chain is $BOLT on?",
@@ -163,11 +164,11 @@ export const config = {
     },
     {
       q: "Was there a presale or team allocation?",
-      a: "No. 100% of the token supply was deployed directly to the public bonding curve. The dev bought on the open curve like everyone else.",
+      a: "No. 79% of the supply is sold on the public bonding curve and 21% goes to the liquidity pool at graduation. The dev buys on the open curve like everyone else.",
     },
     {
       q: "Where is liquidity locked?",
-      a: "Liquidity is locked and burned via the launch contract and the DEX pool upon graduation. Rug-proof by design.",
+      a: "When the curve graduates, liquidity moves to a Meteora DAMM v2 pool and the LP tokens are locked forever. Nobody can withdraw them.",
     },
   ],
 

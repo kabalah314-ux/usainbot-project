@@ -5,7 +5,7 @@ import { BuyButton } from "./BuyButton";
 export function CtaBand() {
   const body = config.prelaunch.active
     ? config.prelaunch.ctaBody
-    : "The fastest memecoin on Solana. No extra tax: only the 1% network fee. Liquidity locked forever.";
+    : "The fastest memecoin on Solana. No extra tax: only the 1% Jupiter trading fee. LP locked forever.";
   const [lead = "", ...tail] = body.split("Follow X");
 
   return (

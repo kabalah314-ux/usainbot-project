@@ -63,7 +63,7 @@ export function Tokenomics() {
           <div
             className="relative aspect-square rounded-full p-5 shadow-[10px_10px_0_#0b0b12]"
             style={{ background: donutGradient }}
-            aria-label={config.prelaunch.active ? "Launch data pending" : "100% Public Bonding Curve and Liquidity"}
+            aria-label={config.prelaunch.active ? "Launch data pending" : "79% public bonding curve, 21% locked liquidity"}
           >
             <div className="grid h-full w-full place-items-center rounded-full border-[3px] border-ink bg-ink text-center">
               <div>
@@ -112,8 +112,8 @@ export function Tokenomics() {
                 <dd className="font-bold">{config.chain.symbol}</dd>
               </div>
               <div className="flex justify-between gap-3">
-                <dt>Network fee</dt>
-                <dd className="font-bold">1% · no extra tax</dd>
+                <dt>Trade fee</dt>
+                <dd className="font-bold">1% Jupiter · no extra tax</dd>
               </div>
               <div className="break-all border-t-2 border-ink/20 pt-2">
                 <dt className="opacity-60">RPC</dt>

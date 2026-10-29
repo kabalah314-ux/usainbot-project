@@ -125,7 +125,7 @@ export function Hero({ onPlay, paused: _paused = false }: { onPlay: () => void; 
         <div className="mt-4 flex items-center gap-2 text-xs font-mono text-paper/50 break-all">
           <span className="text-paper/40 uppercase tracking-widest">CA</span>
           <span className="border border-paper/15 px-2 py-1">
-            {isPlaceholder(config.token.ca) ? "revealed at launch — 00:00 UTC" : config.token.ca}
+            {isPlaceholder(config.token.ca) ? "revealed at launch on X" : config.token.ca}
           </span>
         </div>
 
@@ -133,9 +133,9 @@ export function Hero({ onPlay, paused: _paused = false }: { onPlay: () => void; 
         <div className="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-md">
           {[
             { k: "Tax", v: "0/0" },
-            { k: "Network fee", v: "1%" },
+            { k: "Trade fee", v: "1%" },
             { k: "Supply", v: "1B" },
-            { k: "Liquidity", v: "100%" },
+            { k: "LP", v: "Locked" },
           ].map((s) => (
             <div key={s.k} className="border-[3px] border-paper/20 px-3 py-2">
               <p className="font-display text-2xl text-bolt leading-none">{s.v}</p>
